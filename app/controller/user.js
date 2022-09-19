@@ -1,8 +1,25 @@
 'use strict';
 
+const { jwt } = require('../../config/plugin');
+
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
+    // Get user information
+    async getUserInfor() {
+        const {ctx, app} = this;
+        const token = ctx.request.header.authorization;
+        const decode = app.jwt.verify(token, app.config.jwt.secret);
+        const info = await ctx.service.user.getUser(decode.username);
+        ctx.body = {
+            code: 200,
+            msg: 'successful',
+            username: info.username,
+            password: info.password,
+            about: info.about,
+            avatar: info.avatar,
+        };
+    }
     // Register account
     async register() {
         const {ctx} = this;
@@ -81,7 +98,96 @@ class UserController extends Controller {
 
     // Change Password
     async editPassword() {
-
+        const {ctx, app} = this;
+        const {password = ''} = ctx.request.body;
+        try {
+            const token = ctx.request.header.authorization;
+            const decode = app.jwt.verify(token, app.config.secret);
+            if(!decode){
+                return;
+            }
+            const info = await ctx.service.user.getUser(decode.username);
+            const result = await ctx.service.user.editInfor(info.username, {password});
+            ctx.body = {
+                code: 200,
+                msg: 'succesful',
+                data: {
+                    id: info.id,
+                    username: info.username,
+                    password,
+                    about: info.about,
+                    avatar: info.avatar,
+                },
+              };
+        } catch (err) {console.log('aaa');
+            ctx.body = {
+                code: 500,
+                msg: 'change password fail',
+                data: null,
+              };
+        }
+    }
+    // Change User About
+    async editUserAbout() {
+        const {ctx, app} = this;
+        const {about = ''} = ctx.request.body;
+        try {
+            const token = ctx.request.header.authorization;
+            const decode = app.jwt.verify(token, app.config.secret);
+            if(!decode){
+                return;
+            }
+            const info = await ctx.service.user.getUser(decode.username);
+            const result = await ctx.service.user.editInfor(info.username, {about});
+            ctx.body = {
+                code: 200,
+                msg: 'succesful',
+                data: {
+                    id: info.id,
+                    username: info.username,
+                    password: info.password,
+                    about,
+                    avatar: info.avatar,
+                },
+              };
+        } catch (err) {
+            ctx.body = {
+                code: 500,
+                msg: 'change user about fail',
+                data: null,
+              };
+        }
+    }
+    // Change Avatar
+    async editAvatar() {
+        const {ctx, app} = this;
+        const {avatar = ''} = ctx.request.body;
+        try {
+            const token = ctx.request.header.authorization;
+            const decode = app.jwt.verify(token, app.config.secret);
+            if(!decode){
+                return;
+            }
+            const info = await ctx.service.user.getUser(decode.username);
+            const result = await ctx.service.user.editInfor(info.username, {avatar});
+            ctx.body = {
+                code: 200,
+                msg: 'succesful',
+                data: {
+                    id: info.id,
+                    username: info.username,
+                    password: info.password,
+                    about: info.about,
+                    avatar,
+                },
+              };
+        } catch (err) {
+            ctx.body = {
+                code: 500,
+                msg: 'change user avatar fail',
+                data: null,
+              };
+        }
     }
 }
 

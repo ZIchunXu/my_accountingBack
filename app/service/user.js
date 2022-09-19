@@ -22,11 +22,11 @@ class UserService extends Service {
         }
     }
 
-    // Change password
-    async editPassword(username, password) {
+    // Change Information
+    async editInfor(username, params) {
         const {ctx, app} = this;
         try {
-            let result = await app.mysql.update('user', {password},
+            let result = await app.mysql.update('user', {...params},
             {
                 where: {
                     username,
