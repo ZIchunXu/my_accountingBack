@@ -13,6 +13,10 @@ module.exports = app => {
   router.post('/api/user/editabout', _jwt, controller.user.editUserAbout);
   router.post('/api/user/editavatar', _jwt, controller.user.editAvatar);
   router.post('/api/upload',controller.upload.upload);
-  router.get('/api/bill/list', controller.bill.getBillList);
+  router.get('/api/bill/list', _jwt, controller.bill.getBillList);
   router.post('/api/bill/add', _jwt, controller.bill.addBill);
+  router.get('/api/bill/detail', _jwt, controller.bill.getDetail);
+  router.post('/api/bill/update', _jwt, controller.bill.editBill);
+  router.post('/api/bill/delete', _jwt, controller.bill.deleteBill);
+  router.get('/api/bill/data', _jwt, controller.bill.data);
 };
