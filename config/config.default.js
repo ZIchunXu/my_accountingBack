@@ -7,7 +7,6 @@
  */
 
 module.exports = appInfo => {
-  
   /**
    * built-in config
    * @type {Egg.EggAppConfig}
@@ -22,7 +21,7 @@ module.exports = appInfo => {
 
   // add your user config here
   const userConfig = {
-    // myAppName: 'egg',
+    uploadDir: 'app/public/upload',
   };
 
   config.security = {
@@ -36,6 +35,16 @@ module.exports = appInfo => {
   config.jwt = {
     secret: 'encrypted string',
   }
+
+  config.multipart = {
+    mode: 'file'
+  };
+
+  config.cors = {
+    origin: '*',
+    Credentials: true,
+    allowMethods: 'GET,HEAD, PUT, POST, DELETE, PATCH',
+  };
 
   exports.mysql = {
     client: {
