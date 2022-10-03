@@ -8,7 +8,7 @@ class BillController extends Controller {
     // get bill list by user_id, filter by month/type
     async getBillList() {
         const {ctx, app} = this;
-        const {date, page = 1, page_size = 5, type_id = "all"} = ctx.query;
+        const {date, page = 1, page_size = 5, type_id = 'all'} = ctx.query;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.jwt.secret);
 
@@ -22,13 +22,12 @@ class BillController extends Controller {
             const list = await ctx.service.bill.getBillList(user_id);
             const list1 = list.filter(item => {
                 if (type_id !== 'all') {
-                    return moment(Number(item.date)).format('YYYY-MM') === date && type_id === item.type_id
+                    return moment(Number(item.date)).format('YYYY-MM') === date && item.type_id == type_id
                     
                 }
                 return moment(Number(item.date)).format('YYYY-MM') === date
             })
-
-            console.log('list1', list1);
+            
             let listMap = list1.reduce((curr, item) => {
                 const date = moment(Number(item.date)).format('YYYY-MM-DD');
 
