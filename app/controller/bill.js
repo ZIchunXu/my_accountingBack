@@ -251,7 +251,7 @@ class BillController extends Controller {
     // 
     async data() {
         const {ctx, app} = this;
-        const {date = ''} = ctx.request.body;
+        const {date = ''} = ctx.query;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.secret);
         if(!decode) {
