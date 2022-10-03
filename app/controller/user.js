@@ -84,7 +84,7 @@ class UserController extends Controller {
         const token = app.jwt.sign({
             id: hasUser.id,
             username: hasUser.username,
-            exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // token 24hrs.
+            exp: Math.floor(Date.now() / 1000) + (365 * 60 * 60), // token 24hrs.
         }, app.config.jwt.secret);
 
         ctx.body = {
