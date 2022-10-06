@@ -46,7 +46,8 @@ class UserController extends Controller {
             return;
         }
         try {
-            const result = await ctx.service.user.register({ username, password });
+            const avatar_default = 'https://www.mp3pc.com/uploads/1e23d7974cb987a89501a034ca5f3dfc.jpg';
+            const result = await ctx.service.user.register({ username, password, avatar:avatar_default });
             ctx.body = {
                 code: 200,
                 msg: 'registration is succesful',
