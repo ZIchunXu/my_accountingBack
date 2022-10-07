@@ -9,14 +9,14 @@ const Controller = require('egg').Controller;
 
 class UploadController extends Controller {
     async upload() {
-        const {ctx} = this;
+        const { ctx } = this;
         const file = ctx.request.files[0];
 
         let uploadDir = '';
 
         try {
             const f = fs.readFileSync(file.filepath);
-            const day = moment(new Date()).format('YYMMDD');
+            const day = moment(new Date()).format('YYYYMMDD');
             const dir = path.join(this.config.uploadDir, day);
             const date = Date.now();
             await mkdirp(dir);
