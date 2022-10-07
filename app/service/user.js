@@ -2,6 +2,7 @@
 const Service = require('egg').Service;
 
 class UserService extends Service {
+    // Get user by username
     async getUser(username) {
         const {ctx, app} = this;
         try {
@@ -23,13 +24,13 @@ class UserService extends Service {
     }
 
     // Change Information
-    async editInfor(username, params) {
+    async editInfor(params) {
         const {ctx, app} = this;
         try {
             let result = await app.mysql.update('user', {...params},
             {
                 where: {
-                    username,
+                    username: params.username,
                 },
             });
         } catch (err) {
