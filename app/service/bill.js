@@ -26,7 +26,7 @@ class BillService extends Service {
             return null;
         }
     }
-    // Change Information
+    // add bill
     async addBill(params) {
         const {ctx, app} = this;
         try {
