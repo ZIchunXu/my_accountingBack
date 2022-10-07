@@ -110,7 +110,7 @@ class UserController extends Controller {
                 return;
             }
             const info = await ctx.service.user.getUser(decode.username);
-            const result = await ctx.service.user.editInfor(info.username, { password });
+            const result = await ctx.service.user.editInfor({ ...info, password });
             ctx.body = {
                 code: 200,
                 msg: 'succesful',
@@ -131,10 +131,10 @@ class UserController extends Controller {
             };
         }
     }
-    // Change User About
-    async editUserAbout() {
+    // Change User Information
+    async editUserInfor() {
         const { ctx, app } = this;
-        const { about = '' } = ctx.request.body;
+        const { about = '', avatar = '' } = ctx.request.body;
         try {
             const token = ctx.request.header.authorization;
             const decode = app.jwt.verify(token, app.config.secret);
@@ -142,7 +142,7 @@ class UserController extends Controller {
                 return;
             }
             const info = await ctx.service.user.getUser(decode.username);
-            const result = await ctx.service.user.editInfor(info.username, { about });
+            const result = await ctx.service.user.editInfor({ ...info, about, avatar });
             ctx.body = {
                 code: 200,
                 msg: 'succesful',
@@ -151,44 +151,13 @@ class UserController extends Controller {
                     username: info.username,
                     password: info.password,
                     about,
-                    avatar: info.avatar,
-                },
-            };
-        } catch (err) {
-            ctx.body = {
-                code: 500,
-                msg: 'change user about fail',
-                data: null,
-            };
-        }
-    }
-    // Change Avatar
-    async editAvatar() {
-        const { ctx, app } = this;
-        const { avatar = '' } = ctx.request.body;
-        try {
-            const token = ctx.request.header.authorization;
-            const decode = app.jwt.verify(token, app.config.secret);
-            if (!decode) {
-                return;
-            }
-            const info = await ctx.service.user.getUser(decode.username);
-            const result = await ctx.service.user.editInfor(info.username, { avatar });
-            ctx.body = {
-                code: 200,
-                msg: 'succesful',
-                data: {
-                    id: info.id,
-                    username: info.username,
-                    password: info.password,
-                    about: info.about,
                     avatar,
                 },
             };
         } catch (err) {
             ctx.body = {
                 code: 500,
-                msg: 'change user avatar fail',
+                msg: 'change user about fail',
                 data: null,
             };
         }
