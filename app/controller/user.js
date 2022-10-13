@@ -5,6 +5,16 @@ const { jwt } = require('../../config/plugin');
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
+    async getUserList() {
+    const { ctx, app} = this; // 从this获取service
+    const users = await ctx.service.user.getUserList();
+
+    ctx.body = {
+        code: 0,
+        message: 'success',
+        data: users
+    }
+    }
     // Get user information
     async getUserInfor() {
         const { ctx, app } = this;
@@ -15,10 +25,11 @@ class UserController extends Controller {
             code: 200,
             msg: 'successful',
             data: {
-                username: info.username,
-                password: info.password,
-                about: info.about,
-                avatar: info.avatar,
+                id:info[0]._id,
+                username: info[0].username,
+                password: info[0].password,
+                about: info[0].about,
+                avatar: info[0].avatar,
             }
         };
     }
@@ -36,8 +47,7 @@ class UserController extends Controller {
         }
         //If database has the username, den cant create new user
         const hasUser = await ctx.service.user.getUser(username);
-
-        if (hasUser) {
+        if (hasUser != '') {
             ctx.body = {
                 code: 500,
                 msg: 'this username already exists',
@@ -67,7 +77,7 @@ class UserController extends Controller {
         const { ctx, app } = this;
         const { username, password } = ctx.request.body;
         const hasUser = await ctx.service.user.getUser(username);
-        if (!hasUser) {
+        if (hasUser == '') {
             ctx.body = {
                 code: 500,
                 msg: 'Plz create an account first',
@@ -76,7 +86,7 @@ class UserController extends Controller {
             return;
         }
 
-        if (hasUser && password !== hasUser.password) {
+        if (hasUser !='' && password != hasUser[0].password) {
             ctx.body = {
                 code: 500,
                 msg: 'Password incorrect',
@@ -84,9 +94,10 @@ class UserController extends Controller {
             }
             return;
         }
+        
         const token = app.jwt.sign({
-            id: hasUser.id,
-            username: hasUser.username,
+            id: hasUser[0]._id,
+            username: hasUser[0].username,
             exp: Math.floor(Date.now() / 1000) + (365 * 60 * 60), // token 24hrs.
         }, app.config.jwt.secret);
 
@@ -110,20 +121,19 @@ class UserController extends Controller {
                 return;
             }
             const info = await ctx.service.user.getUser(decode.username);
-            const result = await ctx.service.user.editInfor({ ...info, password });
+            const result = await ctx.service.user.editPass({ info, password });
             ctx.body = {
                 code: 200,
                 msg: 'succesful',
                 data: {
-                    id: info.id,
-                    username: info.username,
+                    id: info[0].id,
+                    username: info[0].username,
                     password,
-                    about: info.about,
-                    avatar: info.avatar,
+                    about: info[0].about,
+                    avatar: info[0].avatar,
                 },
             };
         } catch (err) {
-            console.log('aaa');
             ctx.body = {
                 code: 500,
                 msg: 'change password fail',
@@ -142,14 +152,14 @@ class UserController extends Controller {
                 return;
             }
             const info = await ctx.service.user.getUser(decode.username);
-            const result = await ctx.service.user.editInfor({ ...info, about, avatar });
+            const result = await ctx.service.user.editInfor({ info, about, avatar });
             ctx.body = {
                 code: 200,
                 msg: 'succesful',
                 data: {
-                    id: info.id,
-                    username: info.username,
-                    password: info.password,
+                    id: info[0].id,
+                    username: info[0].username,
+                    password: info[0].password,
                     about,
                     avatar,
                 },
