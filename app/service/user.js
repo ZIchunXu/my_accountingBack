@@ -2,11 +2,24 @@
 const Service = require('egg').Service;
 
 class UserService extends Service {
+    async getUserList() {
+        const {ctx, app} = this;
+        try {
+            const users = await app.model.User.find({});
+            return Object.assign({}, {
+                list: users
+            })
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
     // Get user by username
     async getUser(username) {
         const {ctx, app} = this;
         try {
-            return await app.mysql.get('user', {username});
+            const user = await app.model.User.find({username: username});
+            return user;
         } catch (error) {
             console.log(error);
             return null;
@@ -16,28 +29,41 @@ class UserService extends Service {
     async register(params) {
         const {ctx, app} = this;
         try {
-            const result = await app.mysql.insert('user', params);
-            return result;
+            return await new app.model.User({
+                username:params.username,
+                password:params.password,
+                about:'',
+                avatar:params.avatar,
+                create_time: Date.now()
+              }).save();
         } catch (err) {
             console.log(err);
         }
     }
 
-    // Change Information
+    //Change Information
     async editInfor(params) {
         const {ctx, app} = this;
         try {
-            let result = await app.mysql.update('user', {...params},
-            {
-                where: {
-                    username: params.username,
-                },
-            });
+            
+            console.log("HASDOUH",params.info);
+            let result = await app.model.User.updateOne({_id:params.info[0].id}, {$set:{about: params.about, avatar: params.avatar}});
+            return result;
         } catch (err) {
             console.log(err);
             return null;
         }
     }
-    
+    //Change Password
+    async editPass(params) {
+        const {ctx, app} = this;
+        try {
+            let result = await app.model.User.updateOne({_id:params.info[0].id}, {$set:{password: params.password}});
+            return result;
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
+    }
 }
 module.exports = UserService;
