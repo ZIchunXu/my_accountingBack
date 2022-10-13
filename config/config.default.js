@@ -46,17 +46,16 @@ module.exports = appInfo => {
     allowMethods: 'GET,HEAD, PUT, POST, DELETE, PATCH',
   };
 
-  exports.mysql = {
+  exports.mongoose = {
     client: {
-      host: 'localhost',
-      port: '3306',
-      user:'root',
-      password: 'root',
-      database: 'my_accounting_database',
+        url: 'mongodb://127.0.0.1:27017/my_accountingBack',
+        options: {}
     },
     app: true,
     agent: false,
-  };
+}
+
+exports.baseUrl = 'http://127.0.0.1:7001';
   return {
     ...config,
     ...userConfig,

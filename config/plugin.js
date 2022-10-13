@@ -6,9 +6,9 @@ module.exports = {
     enable: true,
     package: 'egg-view-ejs',
   },
-  mysql: {
+  mongoose: {
     enable: true,
-    package: 'egg-mysql',
+    package: 'egg-mongoose',
   },
   jwt: {
     enable: true,
