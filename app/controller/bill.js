@@ -18,13 +18,16 @@ class BillController extends Controller {
                 return;
             }
 
-            let user_id = decode.id;
+            let user_id = decode.id.toString();
             const list = await ctx.service.bill.getBillList(user_id);
+            console.log("WAFAW",list);
             const list1 = list.filter(item => {
-                if (type_id !== 'all') {
+                if (type_id != 'all') {
+                    console.log("WAFAW",moment(Number(item.date)).format('YYYY-MM'));
                     return moment(Number(item.date)).format('YYYY-MM') === date && item.type_id == type_id
                     
                 }
+                console.log("WAFAW",moment(Number(item.date)).format('YYYY-MM'));
                 return moment(Number(item.date)).format('YYYY-MM') === date
             })
             
@@ -84,7 +87,7 @@ class BillController extends Controller {
         } catch {
             ctx.body = {
                 code: 500,
-                msg: "fail",
+                msg: " get bill list fail",
                 data: null
             }
         }

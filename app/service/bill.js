@@ -5,11 +5,9 @@ class BillService extends Service {
     //  Get the list of the bill by user_id
     async getBillList(user_id) {
         const {ctx, app} = this;
-        const QUERY_STR = 'id, user_id, pay_type, amount, date, type_id, type_name, remark';
-        let sql = `select ${QUERY_STR} from bill where user_id = ${user_id}`;
         try {
-            const result = await app.mysql.query(sql);
-            return result;
+            const bills = await app.model.Bill.find({user_id:user_id});
+            return bills;
         } catch (err) {
             console.log(err);
             return null;

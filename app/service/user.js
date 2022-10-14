@@ -34,7 +34,7 @@ class UserService extends Service {
                 password:params.password,
                 about:'',
                 avatar:params.avatar,
-                create_time: Date.now()
+                create_time: Date().now()
               }).save();
         } catch (err) {
             console.log(err);

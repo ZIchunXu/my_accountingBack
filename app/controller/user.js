@@ -30,6 +30,7 @@ class UserController extends Controller {
                 password: info[0].password,
                 about: info[0].about,
                 avatar: info[0].avatar,
+                create_time: info[0].create_time.toLocaleString(),
             }
         };
     }
