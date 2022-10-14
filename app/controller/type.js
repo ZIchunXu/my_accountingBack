@@ -17,11 +17,21 @@ class TypeController extends Controller {
 
             let user_id = decode.id.toString();
             const result = await ctx.service.type.getTypeList(user_id);
+            const resultMap = [];
+            for(let i in result) {
+                let resultNew = {
+                    id: result[i]._id.toString(),
+                    name: result[i].name,
+                    type: result[i].type,
+                    user_id: result[i].user_id,
+                } 
+                resultMap.push(resultNew);
+            }
             ctx.body = {
                 code: 200,
                 msg: "successful",
                 data: {
-                    list: result
+                    list: resultMap
                 }
             }
         } catch {
