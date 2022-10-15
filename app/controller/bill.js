@@ -20,17 +20,27 @@ class BillController extends Controller {
 
             let user_id = decode.id.toString();
             const list = await ctx.service.bill.getBillList(user_id);
-            console.log("WAFAW",list);
-            const list1 = list.filter(item => {
+            const _list1 = list.filter(item => {
                 if (type_id != 'all') {
-                    console.log("WAFAW",moment(Number(item.date)).format('YYYY-MM'));
                     return moment(Number(item.date)).format('YYYY-MM') === date && item.type_id == type_id
                     
                 }
-                console.log("WAFAW",moment(Number(item.date)).format('YYYY-MM'));
                 return moment(Number(item.date)).format('YYYY-MM') === date
             })
-            
+            const list1 = [];
+            for(let i in _list1) {
+                let resultNew = {
+                    id: _list1[i]._id.toString(),
+                    user_id: _list1[i].user_id,
+                    pay_type: _list1[i].pay_type,
+                    amount: _list1[i].amount,
+                    type_id: _list1[i].type_id,
+                    type_name: _list1[i].type_name,
+                    date: _list1[i].date,
+                    remark: _list1[i].remark,
+                } 
+                list1.push(resultNew);
+            }
             let listMap = list1.reduce((curr, item) => {
                 const date = moment(Number(item.date)).format('YYYY-MM-DD');
 
@@ -54,9 +64,9 @@ class BillController extends Controller {
                 }
                 return curr
             }, []).sort((a, b) => moment(b.date) - moment(a.date));
-
+            console.log(list1);
             const filterListMap = listMap.slice((page - 1) * page_size, page * page_size);
-
+            console.log(filterListMap);
             let list2 = list.filter(item => moment(Number(item.date)).format('YYYY-MM') === date);
 
             let totalExpense = list2.reduce((curr, item) => {
@@ -102,7 +112,7 @@ class BillController extends Controller {
         if(!decode) {
             return;
         }
-        let user_id = decode.id;
+        let user_id = decode.id.toString();
         if (!id) {
             ctx.body = {
                 code: 500,
@@ -135,8 +145,7 @@ class BillController extends Controller {
         if(!decode) {
             return;
         }
-        let user_id = decode.id;
-        console.log(user_id);
+        let user_id = decode.id.toString();
         if (!user_id || !amount|| !pay_type|| !date || !type_id || !type_name) {
             ctx.body = {
                 code: 400,
@@ -177,7 +186,7 @@ class BillController extends Controller {
         if(!decode) {
             return;
         }
-        let user_id = decode.id;
+        let user_id = decode.id.toString();
         if (!user_id || !amount|| !pay_type|| !date || !type_id || !type_name) {
             ctx.body = {
                 code: 400,
