@@ -278,7 +278,7 @@ class BillController extends Controller {
         if (!decode) {
             return;
         }
-        let user_id = decode.id;
+        let user_id = decode.id.toString();
         try {
             const result = await ctx.service.bill.getBillList(user_id);
             const start = moment(date).startOf('month').unix() * 1000;

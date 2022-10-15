@@ -18,13 +18,13 @@ class TypeController extends Controller {
             let user_id = decode.id.toString();
             const result = await ctx.service.type.getTypeList(user_id);
             const resultMap = [];
-            for(let i in result) {
+            for (let i in result) {
                 let resultNew = {
                     id: result[i]._id.toString(),
                     name: result[i].name,
                     type: result[i].type,
                     user_id: result[i].user_id,
-                } 
+                }
                 resultMap.push(resultNew);
             }
             ctx.body = {
@@ -47,25 +47,17 @@ class TypeController extends Controller {
         const { ctx, app } = this;
         const { name, type } = ctx.request.body;
         const token = ctx.request.header.authorization;
+        const decode = app.jwt.verify(token, app.config.jwt.secret);
         try {
-            if (!token) {
-                let user_id = "0";
-
-                const result = await ctx.service.type.addType({ name, type, user_id });
-                ctx.body = {
-                    code: 200,
-                    msg: "successful",
-                    data: null,
-                }
-            } else {
-                const decode = app.jwt.verify(token, app.config.jwt.secret);
-                var user_id = decode.id.toString();
-                const result = await ctx.service.type.addType({ name, type, user_id });
-                ctx.body = {
-                    code: 200,
-                    msg: "successful",
-                    data: null,
-                }
+            if (!decode) {
+                return;
+            }
+            var user_id = decode.id.toString();
+            const result = await ctx.service.type.addType({ name, type, user_id });
+            ctx.body = {
+                code: 200,
+                msg: "successful",
+                data: null,
             }
         } catch {
             ctx.body = {

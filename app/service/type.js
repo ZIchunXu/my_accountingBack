@@ -18,7 +18,6 @@ class TypeService extends Service {
      async addType(params) {
         const {ctx, app} = this;
         try {
-            console.log("SBUOCQEV",params.name);
             return await new app.model.Type({
                 name:params.name,
                 type:params.type,
