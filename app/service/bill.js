@@ -47,14 +47,15 @@ class BillService extends Service {
     async editBill(params) {
         const { ctx, app } = this;
         try {
-            let result = await app.mysql.updateOne({
+            let result = await app.model.Bill.updateOne({
                 _id: ObjectId(params.id),
                 user_id: params.user_id
             }, {
                 $set: {
                     pay_type: params.pay_type,
                     amount: params.amount,
-                    date: params.date, type_id,
+                    date: params.date, 
+                    type_id: params.type_id,
                     type_name: params.type_name,
                     remark: params.remark
                 }
@@ -68,7 +69,7 @@ class BillService extends Service {
     async deleteBill(id, user_id) {
         const { ctx, app } = this;
         try {
-            let result = await app.model.deleteOne({ id: id }, { user_id: user_id });
+            let result = await app.model.Bill.deleteOne({ _id: ObjectId(id), user_id: user_id });
             return result;
         } catch (err) {
             console.log(err);

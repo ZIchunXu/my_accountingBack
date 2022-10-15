@@ -252,7 +252,7 @@ class BillController extends Controller {
             }
             return;
         }
-        let user_id = decode.id;
+        let user_id = decode.id.toString();
         try {
             const result = await ctx.service.bill.deleteBill(id, user_id);
             ctx.body = {
