@@ -127,7 +127,7 @@ class UserController extends Controller {
                 code: 200,
                 msg: 'succesful',
                 data: {
-                    id: info[0].id,
+                    id: info[0]._id.toString(),
                     username: info[0].username,
                     password,
                     about: info[0].about,
@@ -158,7 +158,7 @@ class UserController extends Controller {
                 code: 200,
                 msg: 'succesful',
                 data: {
-                    id: info[0].id,
+                    id: info[0]._id.toString(),
                     username: info[0].username,
                     password: info[0].password,
                     about,

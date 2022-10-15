@@ -1,20 +1,20 @@
 'use strict';
 
-const {jwt} = require('../../config/plugin');
+const { jwt } = require('../../config/plugin');
 const moment = require('moment');
 const Controller = require('egg').Controller;
 
 class BillController extends Controller {
     // get bill list by user_id, filter by month/type
     async getBillList() {
-        const {ctx, app} = this;
-        const {date, page = 1, page_size = 5, type_id = 'all'} = ctx.query;
+        const { ctx, app } = this;
+        const { date, page = 1, page_size = 5, type_id = 'all' } = ctx.query;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.jwt.secret);
 
 
         try {
-            if(!decode) {
+            if (!decode) {
                 return;
             }
 
@@ -23,12 +23,12 @@ class BillController extends Controller {
             const _list1 = list.filter(item => {
                 if (type_id != 'all') {
                     return moment(Number(item.date)).format('YYYY-MM') === date && item.type_id == type_id
-                    
+
                 }
                 return moment(Number(item.date)).format('YYYY-MM') === date
             })
             const list1 = [];
-            for(let i in _list1) {
+            for (let i in _list1) {
                 let resultNew = {
                     id: _list1[i]._id.toString(),
                     user_id: _list1[i].user_id,
@@ -38,7 +38,7 @@ class BillController extends Controller {
                     type_name: _list1[i].type_name,
                     date: _list1[i].date,
                     remark: _list1[i].remark,
-                } 
+                }
                 list1.push(resultNew);
             }
             let listMap = list1.reduce((curr, item) => {
@@ -55,8 +55,8 @@ class BillController extends Controller {
                         bills: [item]
                     })
                 }
-                
-                if(!curr.length) {
+
+                if (!curr.length) {
                     curr.push({
                         date,
                         bills: [item]
@@ -70,7 +70,7 @@ class BillController extends Controller {
             let list2 = list.filter(item => moment(Number(item.date)).format('YYYY-MM') === date);
 
             let totalExpense = list2.reduce((curr, item) => {
-                if(item.pay_type === 1) {
+                if (item.pay_type === 1) {
                     curr += Number(item.amount);
                     return curr;
                 }
@@ -78,7 +78,7 @@ class BillController extends Controller {
             }, 0);
 
             let totalIncome = list2.reduce((curr, item) => {
-                if(item.pay_type === 2) {
+                if (item.pay_type === 2) {
                     curr += Number(item.amount);
                     return curr;
                 }
@@ -93,7 +93,7 @@ class BillController extends Controller {
                     totalPage: Math.ceil(listMap.length / page_size),
                     list: filterListMap || []
                 }
-            } 
+            }
         } catch {
             ctx.body = {
                 code: 500,
@@ -105,11 +105,11 @@ class BillController extends Controller {
 
     // get bill information
     async getDetail() {
-        const {ctx, app} = this;
-        const {id = ''} = ctx.query;
+        const { ctx, app } = this;
+        const { id = '' } = ctx.query;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.secret);
-        if(!decode) {
+        if (!decode) {
             return;
         }
         let user_id = decode.id.toString();
@@ -126,7 +126,16 @@ class BillController extends Controller {
             ctx.body = {
                 code: 200,
                 msg: "get bill detail successful",
-                data: detail,
+                data: {
+                    id: detail[0]._id.toString(),
+                    user_id: detail[0].user_id,
+                    pay_type: detail[0].pay_type,
+                    amount: detail[0].amount,
+                    date: detail[0].date,
+                    type_id: detail[0].type_id,
+                    type_name: detail[0].type_name,
+                    remark: detail[0].remark
+                },
             }
         } catch (err) {
             ctx.body = {
@@ -138,30 +147,30 @@ class BillController extends Controller {
     }
     // add bill into list
     async addBill() {
-        const {ctx, app} = this;
-        const {pay_type, amount, date, type_id, type_name, remark = ''} = ctx.request.body;
+        const { ctx, app } = this;
+        const { pay_type, amount, date, type_id, type_name, remark = '' } = ctx.request.body;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.secret);
-        if(!decode) {
+        if (!decode) {
             return;
         }
         let user_id = decode.id.toString();
-        if (!user_id || !amount|| !pay_type|| !date || !type_id || !type_name) {
+        if (!user_id || !amount || !pay_type || !date || !type_id || !type_name) {
             ctx.body = {
                 code: 400,
                 msg: 'missing parameters',
                 data: null,
-              };
+            };
         }
 
         try {
             const result = await ctx.service.bill.addBill({
                 user_id,
-                pay_type, 
-                amount, 
-                date, 
-                type_id, 
-                type_name, 
+                pay_type,
+                amount,
+                date,
+                type_id,
+                type_name,
                 remark
             });
             ctx.body = {
@@ -169,7 +178,7 @@ class BillController extends Controller {
                 msg: 'add bill sucessful',
                 data: null,
             };
-        } catch(err) {
+        } catch (err) {
             ctx.body = {
                 code: 500,
                 msg: 'add bill fail',
@@ -179,20 +188,20 @@ class BillController extends Controller {
     }
     // Edit bill information
     async editBill() {
-        const {ctx, app} = this;
-        const {id, pay_type, amount, date, type_id, type_name, remark = ''} = ctx.request.body;
+        const { ctx, app } = this;
+        const { id, pay_type, amount, date, type_id, type_name, remark = '' } = ctx.request.body;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.secret);
-        if(!decode) {
+        if (!decode) {
             return;
         }
         let user_id = decode.id.toString();
-        if (!user_id || !amount|| !pay_type|| !date || !type_id || !type_name) {
+        if (!user_id || !amount || !pay_type || !date || !type_id || !type_name) {
             ctx.body = {
                 code: 400,
                 msg: 'missing parameters',
                 data: null,
-              };
+            };
         }
         if (!id) {
             ctx.body = {
@@ -206,11 +215,11 @@ class BillController extends Controller {
             const result = await ctx.service.bill.editBill({
                 id,
                 user_id,
-                pay_type, 
-                amount, 
-                date, 
-                type_id, 
-                type_name, 
+                pay_type,
+                amount,
+                date,
+                type_id,
+                type_name,
                 remark
             });
             ctx.body = {
@@ -218,7 +227,7 @@ class BillController extends Controller {
                 msg: 'update bill sucessful',
                 data: null,
             };
-        } catch(err) {
+        } catch (err) {
             ctx.body = {
                 code: 500,
                 msg: 'update bill fail',
@@ -228,11 +237,11 @@ class BillController extends Controller {
     }
     // Delete bill
     async deleteBill() {
-        const {ctx, app} = this;
-        const {id} = ctx.request.body;
+        const { ctx, app } = this;
+        const { id } = ctx.request.body;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.secret);
-        if(!decode) {
+        if (!decode) {
             return;
         }
         if (!id) {
@@ -248,25 +257,25 @@ class BillController extends Controller {
             const result = await ctx.service.bill.deleteBill(id, user_id);
             ctx.body = {
                 code: 200,
-                msg:"delete bill sucessful",
+                msg: "delete bill sucessful",
                 data: null,
             };
 
         } catch (err) {
             ctx.body = {
                 code: 200,
-                msg:"delete bill fail",
+                msg: "delete bill fail",
                 data: null,
             }
         }
     }
     // 
     async data() {
-        const {ctx, app} = this;
-        const {date = ''} = ctx.query;
+        const { ctx, app } = this;
+        const { date = '' } = ctx.query;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.secret);
-        if(!decode) {
+        if (!decode) {
             return;
         }
         let user_id = decode.id;
@@ -277,14 +286,14 @@ class BillController extends Controller {
             const bill_data = result.filter(item => (Number(item.date) > start && Number(item.date) < end));
 
             const totalExpense = bill_data.reduce((arr, curr) => {
-                if(curr.pay_type == 1) {
+                if (curr.pay_type == 1) {
                     arr += Number(curr.amount);
                 }
                 return arr;
             }, 0)
 
             const totalIncome = bill_data.reduce((arr, curr) => {
-                if(curr.pay_type == 2) {
+                if (curr.pay_type == 2) {
                     arr += Number(curr.amount);
                 }
                 return arr;
@@ -292,7 +301,7 @@ class BillController extends Controller {
 
             let total_data = bill_data.reduce((arr, curr) => {
                 const index = arr.findIndex(item => item.type_id === curr.type_id);
-                if(index === -1) {
+                if (index === -1) {
                     arr.push({
                         type_id: curr.type_id,
                         type_name: curr.type_name,
@@ -319,11 +328,11 @@ class BillController extends Controller {
                     total_data: total_data || [],
                 }
             }
-        } catch(err) {
+        } catch (err) {
             ctx.body = {
                 code: 500,
                 msg: "error",
-                data: null, 
+                data: null,
             }
         }
     }
