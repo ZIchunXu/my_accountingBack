@@ -45,8 +45,6 @@ class UserService extends Service {
     async editInfor(params) {
         const {ctx, app} = this;
         try {
-            
-            console.log("HASDOUH",params.info);
             let result = await app.model.User.updateOne({_id:params.info[0].id}, {$set:{about: params.about, avatar: params.avatar}});
             return result;
         } catch (err) {
