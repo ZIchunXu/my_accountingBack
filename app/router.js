@@ -6,13 +6,14 @@
 module.exports = app => {
   const { router, controller, middleware } = app;
   const _jwt = middleware.jwtErr(app.config.jwt.secret);
-  // register
+  //register
   router.post('/api/user/register', controller.user.register);
-  // 
+  //
   router.post('/api/user/login', controller.user.login);
   // 
+  router.get('/api/user/getalluser', controller.user.getUserList);
   router.get('/api/user/getuser', _jwt, controller.user.getUserInfor);
-  // 
+  //
   router.post('/api/user/editpassword', _jwt, controller.user.editPassword);
   // 
   router.post('/api/user/updateinfo', _jwt, controller.user.editUserInfor);
@@ -33,5 +34,5 @@ module.exports = app => {
   // 
   router.get('/api/type/list', _jwt, controller.type.getTypeList);
   // 
-  // router.get('/api/type/add', _jwt, controller.type.data);
+  router.post('/api/type/add', _jwt, controller.type.addType);
 };
