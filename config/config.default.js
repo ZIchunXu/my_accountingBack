@@ -48,8 +48,20 @@ module.exports = appInfo => {
 
   exports.mongoose = {
     client: {
-        url: 'mongodb://127.0.0.1:27017/my_accountingBack',
-        options: {}
+        url: 'mongodb+srv://root:root@cluster0.96kdpr9.mongodb.net/my_accounting?retryWrites=true&w=majority',
+        options: {},
+        useNewUrlParser: true, 
+        useUnifiedTopology: true, 
+        
+        connect(err) {
+          if(err) {
+            const collection = client.db("my_accounting").collection("devices");
+  // perform actions on the collection object
+  client.close();
+            return;
+          }
+          console.log("conc success")
+        }
     },
     app: true,
     agent: false,
