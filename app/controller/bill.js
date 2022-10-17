@@ -20,8 +20,8 @@ class BillController extends Controller {
             let user_id = decode.id.toString();
             const list = await ctx.service.bill.getBillList(user_id);
             const _list1 = list.filter(item => {
-                if (type_id != 'all') {
-                    return moment(Number(item.date)).format('YYYY-MM') === date && item.type_id == type_id
+                if (type_id !== 'all') {
+                    return moment(Number(item.date)).format('YYYY-MM') === date && item.type_id === type_id
 
                 }
                 return moment(Number(item.date)).format('YYYY-MM') === date
@@ -285,14 +285,14 @@ class BillController extends Controller {
             const bill_data = result.filter(item => (Number(item.date) > start && Number(item.date) < end));
 
             const totalExpense = bill_data.reduce((arr, curr) => {
-                if (curr.pay_type == 1) {
+                if (curr.pay_type === 1) {
                     arr += Number(curr.amount);
                 }
                 return arr;
             }, 0)
 
             const totalIncome = bill_data.reduce((arr, curr) => {
-                if (curr.pay_type == 2) {
+                if (curr.pay_type === 2) {
                     arr += Number(curr.amount);
                 }
                 return arr;
