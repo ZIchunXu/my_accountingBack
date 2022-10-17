@@ -86,7 +86,7 @@ class UserController extends Controller {
             return;
         }
 
-        if (hasUser[0] && password != hasUser[0].password) {
+        if (hasUser[0] && password !== hasUser[0].password) {
             ctx.body = {
                 code: 500,
                 msg: 'Password incorrect',
