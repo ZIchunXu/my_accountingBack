@@ -27,7 +27,7 @@ class UserService extends Service {
     }
     // Register account
     async register(params) {
-        const {ctx, app} = this;
+        const {app} = this;
         try {
             return await new app.model.User({
                 username:params.username,
@@ -43,7 +43,7 @@ class UserService extends Service {
 
     //Change Information
     async editInfor(params) {
-        const {ctx, app} = this;
+        const {app} = this;
         try {
             let result = await app.model.User.updateOne({_id:params.info[0].id}, {$set:{about: params.about, avatar: params.avatar}});
             return result;
@@ -54,7 +54,7 @@ class UserService extends Service {
     }
     //Change Password
     async editPass(params) {
-        const {ctx, app} = this;
+        const {app} = this;
         try {
             let result = await app.model.User.updateOne({_id:params.info[0].id}, {$set:{password: params.password}});
             return result;

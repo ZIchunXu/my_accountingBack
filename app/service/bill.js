@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 class BillService extends Service {
     //  Get the list of the bill by user_id
     async getBillList(user_id) {
-        const { ctx, app } = this;
+        const { app } = this;
         try {
             const bills = await app.model.Bill.find({ user_id: user_id });
             return bills;
@@ -16,7 +16,7 @@ class BillService extends Service {
 
     // Get bill detail
     async getDetail(id, user_id) {
-        const { ctx, app } = this;
+        const { app } = this;
         try {
             const bill =  await app.model.Bill.find({ _id: ObjectId(id), user_id: user_id});
             return bill
@@ -27,7 +27,7 @@ class BillService extends Service {
     }
     // add bill
     async addBill(params) {
-        const { ctx, app } = this;
+        const { app } = this;
         try {
             return await new app.model.Bill({
                 user_id:params.user_id,
@@ -45,7 +45,7 @@ class BillService extends Service {
 
     // Change Information
     async editBill(params) {
-        const { ctx, app } = this;
+        const { app } = this;
         try {
             let result = await app.model.Bill.updateOne({
                 _id: ObjectId(params.id),
@@ -67,7 +67,7 @@ class BillService extends Service {
     }
 
     async deleteBill(id, user_id) {
-        const { ctx, app } = this;
+        const { app } = this;
         try {
             let result = await app.model.Bill.deleteOne({ _id: ObjectId(id), user_id: user_id });
             return result;

@@ -6,7 +6,7 @@ const Controller = require('egg').Controller;
 
 class UserController extends Controller {
     async getUserList() {
-    const { ctx, app} = this; // 从this获取service
+    const { ctx} = this; // 从this获取service
     const users = await ctx.service.user.getUserList();
 
     ctx.body = {
@@ -58,7 +58,7 @@ class UserController extends Controller {
         }
         try {
             const avatar_default = 'https://www.mp3pc.com/uploads/1e23d7974cb987a89501a034ca5f3dfc.jpg';
-            const result = await ctx.service.user.register({ username, password, avatar:avatar_default });
+            await ctx.service.user.register({ username, password, avatar:avatar_default });
             ctx.body = {
                 code: 200,
                 msg: 'registration is succesful',
@@ -122,7 +122,7 @@ class UserController extends Controller {
                 return;
             }
             const info = await ctx.service.user.getUser(decode.username);
-            const result = await ctx.service.user.editPass({ info, password });
+            await ctx.service.user.editPass({ info, password });
             ctx.body = {
                 code: 200,
                 msg: 'succesful',
@@ -153,7 +153,7 @@ class UserController extends Controller {
                 return;
             }
             const info = await ctx.service.user.getUser(decode.username);
-            const result = await ctx.service.user.editInfor({ info, about, avatar });
+            await ctx.service.user.editInfor({ info, about, avatar });
             ctx.body = {
                 code: 200,
                 msg: 'succesful',
