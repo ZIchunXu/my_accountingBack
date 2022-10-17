@@ -3,7 +3,7 @@ const Service = require('egg').Service;
 
 class UserService extends Service {
     async getUserList() {
-        const {ctx, app} = this;
+        const {app} = this;
         try {
             const users = await app.model.User.find({});
             return Object.assign({}, {
@@ -16,7 +16,7 @@ class UserService extends Service {
     }
     // Get user by username
     async getUser(username) {
-        const {ctx, app} = this;
+        const {app} = this;
         try {
             const user = await app.model.User.find({username: username});
             return user;

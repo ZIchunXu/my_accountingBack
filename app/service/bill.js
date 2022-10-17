@@ -47,7 +47,7 @@ class BillService extends Service {
     async editBill(params) {
         const { app } = this;
         try {
-            let result = await app.model.Bill.updateOne({
+            await app.model.Bill.updateOne({
                 _id: ObjectId(params.id),
                 user_id: params.user_id
             }, {

@@ -1,7 +1,5 @@
 'use strict';
 
-const { jwt } = require('../../config/plugin');
-
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
@@ -48,7 +46,8 @@ class UserController extends Controller {
         }
         //If database has the username, den cant create new user
         const hasUser = await ctx.service.user.getUser(username);
-        if (hasUser != '') {
+        console.log(hasUser[0]);
+        if (hasUser[0]) {
             ctx.body = {
                 code: 500,
                 msg: 'this username already exists',
@@ -78,7 +77,7 @@ class UserController extends Controller {
         const { ctx, app } = this;
         const { username, password } = ctx.request.body;
         const hasUser = await ctx.service.user.getUser(username);
-        if (hasUser == '') {
+        if (!hasUser[0]) {
             ctx.body = {
                 code: 500,
                 msg: 'Plz create an account first',
@@ -87,7 +86,7 @@ class UserController extends Controller {
             return;
         }
 
-        if (hasUser !='' && password != hasUser[0].password) {
+        if (hasUser[0] && password != hasUser[0].password) {
             ctx.body = {
                 code: 500,
                 msg: 'Password incorrect',
