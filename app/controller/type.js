@@ -1,7 +1,5 @@
 'use strict';
 
-const { jwt } = require('../../config/plugin');
-
 const Controller = require('egg').Controller;
 
 class TypeController extends Controller {
@@ -53,7 +51,7 @@ class TypeController extends Controller {
                 return;
             }
             var user_id = decode.id.toString();
-            const result = await ctx.service.type.addType({ name, type, user_id });
+            await ctx.service.type.addType({ name, type, user_id });
             ctx.body = {
                 code: 200,
                 msg: "successful",

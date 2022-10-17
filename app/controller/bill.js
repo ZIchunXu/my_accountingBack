@@ -1,6 +1,5 @@
 'use strict';
 
-const { jwt } = require('../../config/plugin');
 const moment = require('moment');
 const Controller = require('egg').Controller;
 
@@ -164,7 +163,7 @@ class BillController extends Controller {
         }
 
         try {
-            const result = await ctx.service.bill.addBill({
+            await ctx.service.bill.addBill({
                 user_id,
                 pay_type,
                 amount,
@@ -212,7 +211,7 @@ class BillController extends Controller {
             return;
         }
         try {
-            const result = await ctx.service.bill.editBill({
+            await ctx.service.bill.editBill({
                 id,
                 user_id,
                 pay_type,
@@ -254,7 +253,7 @@ class BillController extends Controller {
         }
         let user_id = decode.id.toString();
         try {
-            const result = await ctx.service.bill.deleteBill(id, user_id);
+            await ctx.service.bill.deleteBill(id, user_id);
             ctx.body = {
                 code: 200,
                 msg: "delete bill sucessful",
