@@ -9,10 +9,10 @@
  var http = require("http");
  
  /**
-  * Get port from environment and store in Express.
+  * Get port from environment and store in Egg.
   */
  
- var port = normalizePort(process.env.PORT || "3000");
+ var port = normalizePort(process.env.PORT || "7001");
  app.set("port", port);
  
  /**
