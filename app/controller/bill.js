@@ -237,13 +237,14 @@ class BillController extends Controller {
     // Delete bill
     async deleteBill() {
         const { ctx, app } = this;
-        const { id } = ctx.request.body;
+        const { id } = ctx.query;
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.secret);
         if (!decode) {
             return;
         }
         if (!id) {
+            console.log("balabala",id);
             ctx.body = {
                 code: 500,
                 msg: "need to have bill id",
