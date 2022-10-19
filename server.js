@@ -4,15 +4,15 @@
  * Module dependencies.
  */
 
- var app = require("./app");
- var debug = require("debug")("contract:server");
- var http = require("http");
+ const { app } = this;
+ let debug = require("debug")("contract:server");
+ let http = require("http");
  
  /**
   * Get port from environment and store in Egg.
   */
  
- var port = normalizePort(process.env.PORT || "7001");
+let port = normalizePort(process.env.PORT || "7001");
  app.set("port", port);
  
  /**
