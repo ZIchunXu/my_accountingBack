@@ -11,8 +11,13 @@
  /**
   * Get port from environment and store in Express.
   */
+<<<<<<< HEAD
  console.log("This is app",app);
 let port = normalizePort(process.env.PORT || "7001");
+=======
+ 
+ var port = normalizePort(process.env.PORT || "3000");
+>>>>>>> parent of 99fbfd9 (Update port)
  app.set("port", port);
  
  /**
