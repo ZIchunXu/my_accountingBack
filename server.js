@@ -9,7 +9,7 @@
  let http = require("http");
  const host = 'localhost';
  /**
-  * Get port from environment and store in Egg.
+  * Get port from environment and store in Express.
   */
  console.log("This is app",app);
 let port = normalizePort(process.env.PORT || "7001");
