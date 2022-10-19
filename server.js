@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
- const { app } = this;
+ var app = require("./app/router");
  let debug = require("debug")("contract:server");
  let http = require("http");
  
