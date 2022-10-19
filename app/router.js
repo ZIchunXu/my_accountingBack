@@ -6,6 +6,8 @@
 module.exports = app => {
   const { router, controller, middleware } = app;
   const _jwt = middleware.jwtErr(app.config.jwt.secret);
+  router.get('/', function (res) {res.send("Welcome!");
+  });
   //register
   router.post('/api/user/register', controller.user.register);
   //
@@ -18,7 +20,7 @@ module.exports = app => {
   // 
   router.post('/api/user/updateinfo', _jwt, controller.user.editUserInfor);
   // 
-  router.post('/api/upload',controller.upload.upload);
+  router.post('/api/upload', controller.upload.upload);
   // 
   router.get('/api/bill/list', _jwt, controller.bill.getBillList);
   // 
