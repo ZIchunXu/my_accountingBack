@@ -6,8 +6,6 @@
 module.exports = app => {
   const { router, controller, middleware } = app;
   const _jwt = middleware.jwtErr(app.config.jwt.secret);
-  router.get('/', function (res) {res.send("Welcome!");
-  });
   //register
   router.post('/api/user/register', controller.user.register);
   //

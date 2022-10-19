@@ -4,14 +4,14 @@
  * Module dependencies.
  */
 
- var app = require("./app/router");
+ const {app} = require("./app/router");
  let debug = require("debug")("contract:server");
  let http = require("http");
- 
+ const host = 'localhost';
  /**
   * Get port from environment and store in Egg.
   */
- 
+ console.log("This is app",app);
 let port = normalizePort(process.env.PORT || "7001");
  app.set("port", port);
  

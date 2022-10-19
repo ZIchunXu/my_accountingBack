@@ -6,6 +6,7 @@ class TypeController extends Controller {
     // Get type list by User
     async getTypeList() {
         const { ctx, app } = this;
+        console.log("This is app",app);
         const token = ctx.request.header.authorization;
         const decode = app.jwt.verify(token, app.config.jwt.secret);
         try {
