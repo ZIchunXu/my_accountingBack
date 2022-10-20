@@ -22,7 +22,9 @@
     "egg-ci": "^2",
     "egg-mock": "^4",
     "eslint": "^8",
-    "eslint-config-egg": "^12"
+    "eslint-config-egg": "^12",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0"
   },
   "engines": {
     "node": ">=16.0.0"
